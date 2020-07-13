@@ -1,4 +1,4 @@
 # api-client-csharp-example
-Aplicación de consola ejemplo para consumir servicio [Migo API](https://api.migo.pe/).
+Aplicación ejemplo de consola para consumir servicio de validación de datos [Migo API](https://api.migo.pe/)
 
-Requiere .NET Core 2.2, código compatible con .NET Framework
+Requiere .NET Core 2.2 o superior, código compatible con .NET Framework
