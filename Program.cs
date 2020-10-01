@@ -7,36 +7,51 @@ namespace api_client_csharp_example
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Figgle.FiggleFonts.Standard.Render("API Client Example"));
-            var client = new RestClient();
-            client.BaseUrl = new Uri("https://api.migoperu.pe/api/v1");
+            Console.WriteLine(Figgle.FiggleFonts.Standard.Render("Migo API Client"));
 
-            var request = new RestRequest("/ruc", Method.POST);
-            request.AddHeader("Accept", "application/json");
-            request.AddParameter("ruc", "20603274742");
-            request.AddParameter("token", "Ingrese su API Token aquí");
+            string token;
+            string ruc;
 
-            // Usar este bloque si solo quiere ver los valores devueltos
-            // IRestResponse responseData = client.Execute(request);
-            // System.Console.WriteLine(responseData.Content);
+            Console.WriteLine("Pegar API token");
+            token = Console.ReadLine();
 
-            IRestResponse<Entidad> response = client.Execute<Entidad>(request);
+            Console.WriteLine("RUC a consultar:");
 
-            if (response.IsSuccessful)
+            while ((ruc = Console.ReadLine()) != null)
             {
-                var content = response.Data;
 
-                //Iterar las propiedades del objeto
-                Console.WriteLine(response.Data.Ruc);
-                Console.WriteLine(response.Data.NombreORazonSocial);
-                Console.WriteLine(response.Data.Direccion);
-                Console.ReadKey();
+                var client = new RestClient();
+                client.BaseUrl = new Uri("https://api.migoperu.pe/api/v1");
+
+                var request = new RestRequest("/ruc", Method.POST);
+                request.AddHeader("Accept", "application/json");
+                request.AddParameter("ruc", ruc);
+                request.AddParameter("token", token);
+
+                IRestResponse<Entidad> response = client.Execute<Entidad>(request);
+
+                Console.WriteLine();
+                Console.WriteLine("Respuesta:");
+                if (response.IsSuccessful)
+                {
+                    var content = response.Data;
+
+                    //Iterar las propiedades del objeto
+                    Console.WriteLine(response.Data.Ruc);
+                    Console.WriteLine(response.Data.NombreORazonSocial);
+                    Console.WriteLine(response.Data.Direccion);
+                    Console.WriteLine(response.Data.ActualizadoEn);
+                }
+                else
+                {
+                    Console.WriteLine(response.StatusCode);
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("RUC a consultar:");
             }
-            else
-            {
-                Console.WriteLine(response.ErrorMessage);
-                Console.ReadKey();
-            }
+
+
         }
 
         public class Entidad
@@ -60,6 +75,7 @@ namespace api_client_csharp_example
             public string Provincia { get; set; }
             public string Departamento { get; set; }
             public string Direccion { get; set; }
+            public DateTime ActualizadoEn { get; set; }
         }
     }
 }
