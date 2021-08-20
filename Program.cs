@@ -21,7 +21,7 @@ namespace api_client_csharp_example
             {
 
                 var client = new RestClient();
-                client.BaseUrl = new Uri("https://api.migoperu.pe/api/v1");
+                client.BaseUrl = new Uri("https://api.migo.pe/api/v1");
 
                 var request = new RestRequest("/ruc", Method.POST);
                 request.AddHeader("Accept", "application/json");
