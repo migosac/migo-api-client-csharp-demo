@@ -13,4 +13,4 @@ Ejecuta el siguiente comando
 dotnet run
 ```
 
-Ingresar token de prueba. Es necesario crear una cuenta gratuita en [Migo API](https://api.migo.pe/)
+Ingresar token de prueba. (Es necesario crear una cuenta gratuita en [Migo API](https://api.migo.pe/)).
