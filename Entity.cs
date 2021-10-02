@@ -21,5 +21,4 @@ public class Entity
     public string Provincia { get; set; }
     public string Departamento { get; set; }
     public string Direccion { get; set; }
-    public DateTime ActualizadoEn { get; set; }
 }
