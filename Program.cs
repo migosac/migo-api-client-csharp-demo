@@ -1,7 +1,7 @@
 ﻿using System;
 using RestSharp;
 
-namespace api_client_csharp_example
+namespace ApiClientDemo
 {
     class Program
     {
@@ -25,7 +25,8 @@ namespace api_client_csharp_example
             Console.WriteLine("Elija una opción:");
             Console.WriteLine("1) Consulta RUC");
             Console.WriteLine("2) Consulta DNI");
-            Console.WriteLine("3) Salir");
+            Console.WriteLine("3) Consulta Tipo de Cambio");
+            Console.WriteLine("4) Salir");
             Console.Write("\r\nSeleccione una opción: ");
 
             switch (Console.ReadLine())
@@ -37,6 +38,9 @@ namespace api_client_csharp_example
                     fetchDni();
                     return true;
                 case "3":
+                    fetchExchange();
+                    return true;
+                case "4":
                     return false;
                 default:
                     return true;
@@ -67,16 +71,16 @@ namespace api_client_csharp_example
             {
                 var content = response.Data;
 
-                //Iterar las propiedades del objeto
                 Console.WriteLine(response.Data.Ruc);
                 Console.WriteLine(response.Data.NombreORazonSocial);
                 Console.WriteLine(response.Data.Direccion);
-                Console.WriteLine(response.Data.EstadoDelContribuyente);
+                Console.WriteLine("Estado del Contribuyente: " + response.Data.EstadoDelContribuyente);
             }
             else
             {
                 Console.WriteLine(response.StatusCode);
             }
+
             Console.Write("\r\nPresione Enter para regresar al menú principal");
             Console.ReadLine();
         }
@@ -105,14 +109,52 @@ namespace api_client_csharp_example
             {
                 var content = response.Data;
 
-                //Iterar las propiedades del objeto
                 Console.WriteLine(response.Data.Dni);
-                Console.WriteLine(response.Data.Nombre);
+                Console.WriteLine("Nombre: " + response.Data.Nombre);
             }
             else
             {
                 Console.WriteLine(response.StatusCode);
             }
+
+            Console.Write("\r\nPresione Enter para regresar al menú principal");
+            Console.ReadLine();
+        }
+
+        private static void fetchExchange()
+        {
+            string fecha;
+
+            Console.WriteLine("Fecha a consultar (YYYY-MM-DD):");
+            fecha = Console.ReadLine();
+
+            var client = new RestClient();
+            client.BaseUrl = new Uri("https://api.migo.pe/api/v1");
+
+            var request = new RestRequest("/exchange/date", Method.POST);
+            request.AddHeader("Accept", "application/json");
+            request.AddParameter("fecha", fecha);
+            request.AddParameter("token", token);
+
+            IRestResponse<Exchange> response = client.Execute<Exchange>(request);
+
+            Console.WriteLine();
+            Console.WriteLine("Resultado:");
+
+            if (response.IsSuccessful)
+            {
+                var content = response.Data;
+
+                Console.WriteLine(response.Data.Fecha);
+                Console.WriteLine(response.Data.Moneda);
+                Console.WriteLine("Precio de Compra: " + response.Data.PrecioCompra);
+                Console.WriteLine("Precio de Venta: " + response.Data.PrecioVenta);
+            }
+            else
+            {
+                Console.WriteLine(response.StatusCode);
+            }
+
             Console.Write("\r\nPresione Enter para regresar al menú principal");
             Console.ReadLine();
         }
