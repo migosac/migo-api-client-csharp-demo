@@ -1,5 +1,6 @@
 ﻿using System;
 using RestSharp;
+using Microsoft.Extensions.Configuration;
 
 namespace ApiClientDemo
 {
@@ -8,9 +9,9 @@ namespace ApiClientDemo
         public static string token;
         static void Main(string[] args)
         {
+            IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-            Console.WriteLine("Ingresar token");
-            token = Console.ReadLine();
+            token = Config.GetSection("token").Value;
 
             bool showMenu = true;
             while (showMenu)
@@ -21,7 +22,6 @@ namespace ApiClientDemo
 
         private static bool MainMenu()
         {
-            Console.Clear();
             Console.WriteLine("Elija una opción:");
             Console.WriteLine("1) Consulta RUC");
             Console.WriteLine("2) Consulta DNI");
